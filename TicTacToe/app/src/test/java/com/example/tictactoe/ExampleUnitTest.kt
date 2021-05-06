@@ -1,5 +1,7 @@
 package com.example.tictactoe
 
+import com.example.tictactoe.api.GameService
+import com.example.tictactoe.api.data.Game
 import org.junit.Test
 
 import org.junit.Assert.*
@@ -10,6 +12,22 @@ import org.junit.Assert.*
  * See [testing documentation](http://d.android.com/tools/testing).
  */
 class ExampleUnitTest {
+    var gameState: Game? = null
+    val firstPlayer:String = "Player1"
+    val secondPlayer:String = "Player2"
+    val initState = listOf(listOf(0,0,0), listOf(0,0,0), listOf(0,0,0))
+
+    @Test
+    fun createGame(){
+        GameService.createGame(firstPlayer,initState ){ state:Game?, err:Int? ->
+            gameState = state
+            assertNotNull(state)
+            assertNotNull(state?.gameId)
+            assertEquals(firstPlayer, state?.players?.get(0))
+        }
+    }
+
+
     @Test
     fun addition_isCorrect() {
         assertEquals(4, 2 + 2)
