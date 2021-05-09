@@ -2,6 +2,7 @@ package com.example.tictactoe
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.example.tictactoe.api.data.GameState
 import com.example.tictactoe.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -13,13 +14,17 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         // Check if we can create a game
-        // GameManager.createGame("Player1")
+        GameManager.createGame("Player1")
         // gameid to use:tg4et
 
         // Check if we can join a game.
         // GameManager.joinGame("Player2", "t32ddi")
 
         // Check if game is polled
-        GameManager.pollGame()
+        // GameManager.pollGame()
+
+        // Check if game can be updated
+        val newGameState: GameState = listOf(listOf('X', '0', '0'), listOf('X', 'O', '0'), listOf('X', 'O', '0'))
+        GameManager.updateGame(newGameState)
     }
 }

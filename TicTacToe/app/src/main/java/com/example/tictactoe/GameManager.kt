@@ -11,7 +11,7 @@ object GameManager {
     var player: String? = null
     var game: Game? = null
 
-    val StartingGameState: GameState = listOf(listOf(0, 0, 0), listOf(0, 0, 0), listOf(0, 0, 0))
+    val StartingGameState: GameState = listOf(listOf('0', '0', '0'), listOf('0', '0', '0'), listOf('0', '0', '0'))
 
     fun createGame(player: String) {
         GameService.createGame(player, StartingGameState) { game: Game?, err: Int? ->
@@ -61,5 +61,24 @@ object GameManager {
         }
     }
 
+    fun updateGame(state: GameState) {
+        var gameId = "tg4et"
+
+        if (gameId == null) {
+            Log.d(TAG, "game id is null, could not update game.")
+        } else {
+            // gameId exists, poll game
+            GameService.updateGame(gameId, state) { game: Game?, err: Int? ->
+                if (err != null) {
+                    Log.d( TAG, "Could not update game")
+                } else {
+                    if (this.game?.state != game?.state) {
+                        this.game?.state = game!!.state
+                        Log.d(TAG, "Updated game, updated state: ${this.game}")
+                    }
+                }
+            }
+        }
+    }
 
 }

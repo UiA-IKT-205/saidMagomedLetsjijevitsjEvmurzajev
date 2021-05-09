@@ -117,8 +117,32 @@ object GameService {
 
     }
 
-    fun updateGame(gameId: String, gameState: GameState, callback: GameServiceCallback) {
+    fun updateGame(gameId: String, state: GameState, callback: GameServiceCallback) {
+        val url = APIEndpoints.CREATE_GAME.url
 
+        val requestData = JSONObject()
+        requestData.put("gameId", gameId)
+        requestData.put("state", JSONArray(state))
+
+        val request = object : JsonObjectRequest(
+            Request.Method.POST, url, requestData,
+            {
+                // Success game created.
+                val game = Gson().fromJson(it.toString(0), Game::class.java)
+                callback(game, null)
+            }, {
+                // Error creating new game.
+                callback(null, it.networkResponse.statusCode)
+            }) {
+            override fun getHeaders(): MutableMap<String, String> {
+                val headers = HashMap<String, String>()
+                headers["Content-Type"] = "application/json"
+                headers["Game-Service-Key"] = context.getString(R.string.game_service_key)
+                return headers
+            }
+        }
+
+        requestQue.add(request)
     }
 
 }
