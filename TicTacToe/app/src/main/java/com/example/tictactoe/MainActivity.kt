@@ -12,7 +12,10 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Check if we can create a game
-        GameManager.createGame("Player1")
+        /*//Check if we can create a game
+        GameManager.createGame("Player1")*/
+
+        // Check if we can join a game.
+        GameManager.joinGame("Player2", "t32ddi")
     }
 }
