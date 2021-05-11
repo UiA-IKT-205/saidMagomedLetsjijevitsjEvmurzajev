@@ -62,6 +62,7 @@ object GameManager {
     }
 
     fun updateGame(state: GameState) {
+        //var gameId = this.game?.gameId
         var gameId = "tg4et"
 
         if (gameId == null) {
