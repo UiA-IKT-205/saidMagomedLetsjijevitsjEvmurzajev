@@ -1,5 +1,6 @@
 package com.example.tictactoe
 
+import android.content.Intent
 import android.util.Log
 import com.example.tictactoe.api.GameService
 import com.example.tictactoe.api.data.Game
@@ -20,6 +21,14 @@ object GameManager {
             } else {
                 this.game = game
                 Log.d(TAG, "Created game with game id: ${this.game?.gameId}")
+
+                // Create intent
+                val intent = Intent(App.context, GameActivity::class.java)
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+                // Send game object to intent
+                intent.putExtra("GAME_OBJECT", game)
+                App.context.startActivity(intent)
             }
         }
     }
@@ -30,9 +39,13 @@ object GameManager {
                 Log.d(TAG, "Could not join game")
             } else {
                 this.game = game
-                Log.d(
-                    TAG, "Joined game with game id: ${this.game?.gameId}"
-                )
+                Log.d(TAG, "Joined game with game id: ${this.game?.gameId}")
+                // Create intent
+                val intent = Intent(App.context, GameActivity::class.java)
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                // Send game object to intent
+                intent.putExtra("GAME_OBJECT", game)
+                App.context.startActivity(intent)
             }
         }
     }

@@ -72,7 +72,7 @@ object GameService {
                 val game = Gson().fromJson(it.toString(0), Game::class.java)
                 callback(game, null)
             }, {
-                // Error creating new game.
+                // Error joining game.
                 callback(null, it.networkResponse.statusCode)
             }) {
             override fun getHeaders(): MutableMap<String, String> {
@@ -98,11 +98,11 @@ object GameService {
         val request = object : JsonObjectRequest(
             Request.Method.GET, url, requestData,
             {
-                // Success game created.
+                // Success game polled.
                 val game = Gson().fromJson(it.toString(0), Game::class.java)
                 callback(game, null)
             }, {
-                // Error creating new game.
+                // Error polling game.
                 callback(null, it.networkResponse.statusCode)
             }) {
             override fun getHeaders(): MutableMap<String, String> {
@@ -127,11 +127,11 @@ object GameService {
         val request = object : JsonObjectRequest(
             Request.Method.POST, url, requestData,
             {
-                // Success game created.
+                // Success game updated.
                 val game = Gson().fromJson(it.toString(0), Game::class.java)
                 callback(game, null)
             }, {
-                // Error creating new game.
+                // Error updating game.
                 callback(null, it.networkResponse.statusCode)
             }) {
             override fun getHeaders(): MutableMap<String, String> {
