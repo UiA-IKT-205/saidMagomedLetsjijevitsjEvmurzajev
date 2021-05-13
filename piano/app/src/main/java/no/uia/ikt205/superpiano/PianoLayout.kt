@@ -1,5 +1,6 @@
 package com.example.superpiano
 
+import android.net.Uri
 import android.os.Bundle
 import android.os.SystemClock.uptimeMillis
 import androidx.fragment.app.Fragment
@@ -7,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.net.toUri
 import com.example.superpiano.data.Note
 import com.example.superpiano.databinding.FragmentPianoBinding
 import kotlinx.android.synthetic.main.fragment_piano.*
@@ -15,6 +17,8 @@ import java.io.File
 import java.io.FileOutputStream
 
 class Piano : Fragment() {
+
+    var onSave:((file: Uri) -> Unit)? = null
 
     private var _binding:FragmentPianoBinding? = null
     private val binding get() = _binding!!
@@ -56,7 +60,7 @@ class Piano : Fragment() {
             }
             ft.add(view.fullTonePianoKeys.id, fullTonePianoKey, "note_$it")
 
-
+            //      ft.add(view.pianoKeys.id,fullTonePianoKey,"note $it")
         }
         halfTones.forEach { it ->
             val halfTonePianoKey = HalfTonePianoKeyFragment.newInstance(it)
@@ -74,7 +78,7 @@ class Piano : Fragment() {
                 println("Piano key up $note")
             }
 
-
+            // View is possibly not instanced (possibly move to "onViewCreated")
             ft.add(view.halfToneKeysLayout.id, halfTonePianoKey, "note_$it")
 
         }
@@ -85,11 +89,11 @@ class Piano : Fragment() {
             val path = this.activity?.getExternalFilesDir(null)
 
             if (fileSaveConditions(fileName, path)) {
-
+                // println(fileName)
                 fileName = "$fileName.musikk"
 
                 FileOutputStream(File(path, fileName), true).bufferedWriter().use { writer ->
-
+                    // bufferedWriter lever her, men stenger ned utenfor
                     score.forEach {
                         writer.write("${it.toString()}\n")
                     }
@@ -102,6 +106,21 @@ class Piano : Fragment() {
         }
 
         return view
+    }
+
+    private fun saveFile(fileName:String, path:File?){
+        val extendedFileName = "$fileName.musikk"
+        val file = File(path, extendedFileName)
+
+        FileOutputStream(file, true).bufferedWriter().use { writer ->
+            // bufferedWriter lever her, men stenger ned utenfor
+            score.forEach {
+                writer.write("${it.toString()}\n")
+            }
+        }
+
+        this.onSave?.invoke(file.toUri())
+
     }
 
     fun doesFileExist(filename: String, path: File?): Boolean {
