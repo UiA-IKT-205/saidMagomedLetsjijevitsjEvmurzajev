@@ -11,8 +11,9 @@ object GameManager {
 
     var player: String? = null
     var game: Game? = null
+    var stateChanged:Boolean = false
 
-    val StartingGameState: GameState = listOf(listOf('0', '0', '0'), listOf('0', '0', '0'), listOf('0', '0', '0'))
+    val StartingGameState: GameState = listOf(mutableListOf('0', '0', '0'), mutableListOf('0', '0', '0'), mutableListOf('0', '0', '0'))
 
     fun createGame(player: String) {
         GameService.createGame(player, StartingGameState) { game: Game?, err: Int? ->
@@ -50,8 +51,9 @@ object GameManager {
         }
     }
 
-    fun pollGame() {
+    fun pollGame():Boolean {
         var gameId = this.game?.gameId
+
 
         if (gameId == null) {
             Log.d(TAG, "game id is null, could not poll game.")
@@ -62,21 +64,24 @@ object GameManager {
                     Log.d( TAG, "Could not poll game")
                 } else {
                     Log.d(TAG, this.game.toString())
+                    this.stateChanged = false
 
                     if (this.game?.state != game?.state) {
                         // game state has changed, reinitialize game.
                         this.game = game
-                        // this.game?.state = game!!.state
                         Log.d(TAG, "Polled game, new state: ${this.game?.state}")
+                        this.stateChanged = true
+                        Log.d(TAG, "statechanged? $stateChanged")
                     }
                 }
             }
         }
+        return stateChanged
     }
 
     fun updateGame(state: GameState) {
-        //var gameId = this.game?.gameId
-        var gameId = "tg4et"
+        var gameId = this.game?.gameId
+        //var gameId = "tg4et"
 
         if (gameId == null) {
             Log.d(TAG, "game id is null, could not update game.")

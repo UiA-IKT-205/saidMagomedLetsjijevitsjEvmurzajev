@@ -15,7 +15,7 @@ class ExampleUnitTest {
     var gameState: Game? = null
     val firstPlayer:String = "Player1"
     val secondPlayer:String = "Player2"
-    val initState = listOf(listOf(0,0,0), listOf(0,0,0), listOf(0,0,0))
+    val initState = listOf(mutableListOf('0', '0', '0'), mutableListOf('0', '0', '0'), mutableListOf('0', '0', '0'))
 
     @Test
     fun createGame(){

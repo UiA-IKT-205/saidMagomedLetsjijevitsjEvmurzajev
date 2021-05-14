@@ -118,7 +118,7 @@ object GameService {
     }
 
     fun updateGame(gameId: String, state: GameState, callback: GameServiceCallback) {
-        val url = APIEndpoints.CREATE_GAME.url
+        val url = APIEndpoints.CREATE_GAME.url + '/' + gameId.toString() + "/update"
 
         val requestData = JSONObject()
         requestData.put("gameId", gameId)
