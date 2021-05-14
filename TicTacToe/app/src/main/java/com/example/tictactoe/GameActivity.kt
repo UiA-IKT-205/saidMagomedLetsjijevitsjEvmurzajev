@@ -66,16 +66,16 @@ class GameActivity : AppCompatActivity() {
         initialzeCell(2, 2)
     }
 
-    fun initialzeCell(column:Int, cell:Int) {
-        var btn:Button = findViewById(getResources().getIdentifier("_a$column$cell", "id", packageName))
+    fun initialzeCell(row:Int, column:Int) {
+        var btn:Button = findViewById(getResources().getIdentifier("_a$row$column", "id", packageName))
 
-        if(game!!.state[column][cell] != '0')
-            btn.text = game!!.state[column][cell].toString()
+        if(game!!.state[row][column] != '0')
+            btn.text = game!!.state[row][column].toString()
 
         btn.setOnClickListener {
             if(myTurn) {
                 btn.text = myMark.toString()
-                game!!.state[column][cell] = myMark!!
+                game!!.state[row][column] = myMark!!
                 myTurn = false
                 GameManager.updateGame(game!!.state)
                 checkIfWinner()
